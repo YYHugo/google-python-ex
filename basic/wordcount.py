@@ -45,6 +45,56 @@ import sys
 # and builds and returns a word/count dict for it.
 # Then print_words() and print_top() can just call the utility function.
 
+def word_count(filename):
+  """Dict for word count in filename
+
+  Args:
+      filename (string): filename directory
+  Returns:
+      word_count (dict: KEY: word, value: qtty): words and their occurances
+  """
+  
+  word_count_dict = {}
+
+  f = open(filename, 'r')
+
+  # Iterate over each line
+  for line in f:
+    words = line.split()
+    # Iterate over each word in line
+    for word in words:
+      word = word.lower()
+      if not word in word_count_dict:
+        # first time seeing this new word
+        word_count_dict[word] = 1
+      else:
+        # existing element, incrementing counter
+        word_count_dict[word] += 1
+
+  f.close()
+  return word_count_dict
+
+def print_words(filename):
+  """counts how often each word appears in the text and prints
+    in order sorted by word"""
+  dict = word_count(filename)
+  
+  for key in sorted(dict.keys()):
+    print key, dict[key]
+
+
+
+def print_top(filename):
+  """similar to print_words() but it prints just the top 20 most common words sorted
+so the most common word comes first"""
+  dict = word_count(filename)
+  
+  dict_sorted = sorted(dict.items(), key=lambda x: x[1], reverse=True)
+
+  for word, occurs in dict_sorted[:20]:
+    print word, occurs
+  
+  sys.exit(0)
 ###
 
 # This basic command line argument parsing code is provided and
